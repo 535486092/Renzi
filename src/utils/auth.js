@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 
-const TokenKey = 'vue_admin_template_token'
+const TokenKey = 'hrsaas_22_usertoken_nb'
 
 export function getToken() {
   return Cookies.get(TokenKey)
