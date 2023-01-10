@@ -14,8 +14,8 @@
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img src="@/assets/common/bigUserHeader.png" class="user-avatar" />
-          <span class="name">管理员</span>
+          <img v-imgerror="defaultImg" :src="staffPhoto" class="user-avatar" />
+          <span class="name">{{ name }}</span>
           <i class="el-icon-caret-bottom" style="color: #fff"></i>
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
@@ -25,8 +25,8 @@
           <a target="_blank" href="https://github.com/535486092/Renzi.git">
             <el-dropdown-item>项目地址</el-dropdown-item>
           </a>
-          <el-dropdown-item divided @click.native="logout">
-            <span style="display: block">退出登录</span>
+          <el-dropdown-item divided @click.native="clicklogout">
+            <span v-textcolor="'red'" style="display: block">退出登录</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -35,46 +35,45 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 // import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
+import { imgerror, textcolor } from '@/directives'
 
 export default {
   components: {
     // Breadcrumb,
     Hamburger
   },
+  directives: {
+    textcolor,
+    imgerror
+  },
+  data() {
+    return {
+      defaultImg: require('@/assets/common/head.jpg')
+    }
+  },
   computed: {
-    ...mapGetters(['sidebar', 'avatar'])
+    ...mapGetters(['sidebar', 'avatar', 'name', 'staffPhoto'])
+  },
+  created() {
+    // this.getUserInfo()
   },
   methods: {
+    ...mapActions('user', ['getUserInfo', 'logout']),
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
-    async logout() {
-      await this.$store.dispatch('user/logout')
-      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+    clicklogout() {
+      this.logout()
+      this.$router.push('/login')
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.user-avatar {
-  cursor: pointer;
-  width: 30px;
-  height: 30px;
-  border-radius: 15px;
-  vertical-align: middle;
-}
-.name {
-  color: #fff;
-  vertical-align: middle;
-  margin-left: 5px;
-}
-.user-dropdown {
-  color: #fff;
-}
 .app-breadcrumb {
   display: inline-block;
   font-size: 18px;
@@ -147,26 +146,41 @@ export default {
 
     .avatar-container {
       margin-right: 30px;
-
-      .avatar-wrapper {
-        margin-top: 5px;
-        position: relative;
-
-        .user-avatar {
-          cursor: pointer;
-          width: 40px;
-          height: 40px;
-          border-radius: 10px;
-        }
-
-        .el-icon-caret-bottom {
-          cursor: pointer;
-          position: absolute;
-          right: -20px;
-          top: 25px;
-          font-size: 12px;
-        }
+      .user-avatar {
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+        border-radius: 15px;
+        vertical-align: middle;
       }
+      .name {
+        color: #fff;
+        vertical-align: middle;
+        margin-left: 5px;
+      }
+      .user-dropdown {
+        color: #fff;
+      }
+
+      // .avatar-wrapper {
+      //   margin-top: 5px;
+      //   position: relative;
+
+      //   .user-avatar {
+      //     cursor: pointer;
+      //     width: 40px;
+      //     height: 40px;
+      //     border-radius: 10px;
+      //   }
+
+      //   .el-icon-caret-bottom {
+      //     cursor: pointer;
+      //     position: absolute;
+      //     right: -20px;
+      //     top: 25px;
+      //     font-size: 12px;
+      //   }
+      // }
     }
   }
 }

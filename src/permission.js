@@ -5,19 +5,26 @@ import 'nprogress/nprogress.css'
 // ⬇白名单
 const whiteList = ['/login', '/404']
 // ⬇ 全局前置守卫
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   NProgress.start()
   const token = store.getters.token
   // 判断是否有无token
   if (token) {
     // 判断是否访问的是登录页，是就跳转到登录页
+    // to.path即将访问的网页
     if (to.path === '/login') {
       next('/')
       NProgress.done()
     } else {
+      // 一定是有了个人信息之后，才能正常放行
+      // 我们应该等一个异步操作完成之后，再去干这件事(放行路由)
+      if (!store.state.user.userInfo.userId) {
+        await store.dispatch('user/getUserInfo')
+      }
       next()
     }
   } else {
+    // includes用法：判断数据是否有这个数据，返回true和fales
     if (whiteList.includes(to.path)) {
       next()
     } else {
