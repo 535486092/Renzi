@@ -4,7 +4,7 @@ import 'normalize.css/normalize.css' // 默认样式
 
 import ElementUI from 'element-ui' // elementUI组件
 import 'element-ui/lib/theme-chalk/index.css' // elementUI框架的css
-import locale from 'element-ui/lib/locale/lang/en' // lang i18n语言包 默认引入英文
+// import locale from 'element-ui/lib/locale/lang/en' // lang i18n语言包 默认引入英文
 
 import '@/styles/index.scss' // global css全局的css文件
 
@@ -16,7 +16,7 @@ import '@/icons' // icon项目内的小图标
 import '@/permission' // permission control
 
 // set ElementUI lang to EN
-Vue.use(ElementUI, { locale })
+Vue.use(ElementUI)
 // 如果想要中文版 element-ui，按如下方式声明
 // Vue.use(ElementUI)
 
