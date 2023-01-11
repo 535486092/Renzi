@@ -16,3 +16,39 @@ export function getRoleListApi(page, pagesize) {
     }
   })
 }
+
+/**
+ *
+ * @param {string} id 角色id
+ * @returns promise对象
+ */
+export function delRoleApi(id) {
+  return request({
+    url: `/sys/role/${id}`,
+    method: 'DELETE'
+  })
+}
+
+/**
+ *
+ * @returns
+ */
+export function addRoleApi(data) {
+  return request({
+    url: '/sys/role',
+    method: 'POST',
+    data
+  })
+}
+
+/**
+ *
+ * @param {*} id
+ * @returns
+ */
+export function modifyRoleApi(id) {
+  return request({
+    url: `/sys/role/${id}`,
+    method: 'PUT'
+  })
+}
