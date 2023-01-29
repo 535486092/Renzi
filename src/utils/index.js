@@ -17,8 +17,8 @@ export function parseTime(time, cFormat) {
   if (typeof time === 'object') {
     date = time
   } else {
-    if ((typeof time === 'string')) {
-      if ((/^[0-9]+$/.test(time))) {
+    if (typeof time === 'string') {
+      if (/^[0-9]+$/.test(time)) {
         // support "1548221490638"
         time = parseInt(time)
       } else {
@@ -28,7 +28,7 @@ export function parseTime(time, cFormat) {
       }
     }
 
-    if ((typeof time === 'number') && (time.toString().length === 10)) {
+    if (typeof time === 'number' && time.toString().length === 10) {
       time = time * 1000
     }
     date = new Date(time)
@@ -45,7 +45,9 @@ export function parseTime(time, cFormat) {
   const time_str = format.replace(/{([ymdhisa])+}/g, (result, key) => {
     const value = formatObj[key]
     // Note: getDay() returns 0 on Sunday
-    if (key === 'a') { return ['日', '一', '二', '三', '四', '五', '六'][value ] }
+    if (key === 'a') {
+      return ['日', '一', '二', '三', '四', '五', '六'][value]
+    }
     return value.toString().padStart(2, '0')
   })
   return time_str
@@ -114,4 +116,29 @@ export function param2Obj(url) {
     }
   })
   return obj
+}
+
+/**
+ * 封装递归部门列表的方法
+ * 递归处理后台返回的数据
+ * @param {array} data 部门列表
+ * @param {string} value 标识
+ * @returns {Object}
+ */
+export function recursionDepartsFn(data, value) {
+  const list = []
+  data.forEach(item => {
+    // 想筛选第一级数据
+    // item第一次遍历pid是空字符串
+    // 还要找二级，这时就需要传递item.id来和pid比较
+    if (item.pid === value) {
+      const children = recursionDepartsFn(data, item.id)
+      // 如果返回的数据大于0，说明有儿子
+      if (children.length > 0) {
+        item.children = children
+      }
+      list.push(item)
+    }
+  })
+  return list
 }

@@ -22,10 +22,18 @@ Vue.use(components)
 Vue.use(ElementUI)
 // 如果想要中文版 element-ui，按如下方式声明
 // Vue.use(ElementUI)
+// {{数据|formatTime（YYYY年MM月DD日）}}
+// Vue.filter('formatTime', function (value, str) {
+//   return moment(value).format(str)
+// })
 
 import * as directiveObj from '@/directives'
+import * as filter from '@/filter/index'
 for (const key in directiveObj) {
   Vue.directive(key, directiveObj[key])
+}
+for (const key in filter) {
+  Vue.filter(key, filter[key])
 }
 
 Vue.config.productionTip = false

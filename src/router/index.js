@@ -50,6 +50,18 @@ export const constantRoutes = [
       }
     ]
   },
+  {
+    path: '/import',
+    component: Layout,
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/import/index'),
+        meta: { title: 'excel上传' }
+      }
+    ],
+    hidden: true
+  },
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }

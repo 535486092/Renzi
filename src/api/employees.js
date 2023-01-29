@@ -18,3 +18,51 @@ export function getUserListApi(page = 1, size = 5) {
     }
   })
 }
+
+/**
+ * 删除员工
+ * @param {string} id 员工id
+ * @returns promise对象
+ */
+export function delUserItemApi(id) {
+  return request({
+    url: `/sys/user/${id}`,
+    method: 'DELETE'
+  })
+}
+
+/**
+ * 新增员工
+ * @param {string} username 员工名字
+ * @param {string} mobile 员工手机号
+ * @param {string} formOfEmployment 员工聘用形式 1正式, 2非正式
+ * @param {string} workNumber 员工工号
+ * @param {string} departmentName 员工部门名字
+ * @param {string} timeOfEntry 员工入职日期 格式: 2020-01-01
+ * @param {string} correctionTime 员工转正日期 格式: 2020-01-01
+ * @returns promise对象
+ */
+export function addUserItemApi(data) {
+  return request({
+    url: '/sys/user',
+    method: 'post',
+    data
+  })
+}
+
+/**
+ * 批量新增员工
+ * @param {string} username 员工名字
+ * @param {string} mobile 员工手机号
+ * @param {string} timeOfEntry 员工入职日期 格式: 2020-01-01
+ * @param {string} correctionTime 员工转正日期 格式: 2020-01-01
+ * @param {string} workNumber 员工工号
+ * @returns promise对象
+ */
+export function batchUserListApi(data) {
+  return request({
+    url: '/sys/user/batch',
+    method: 'post',
+    data
+  })
+}

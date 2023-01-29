@@ -38,6 +38,7 @@
 import treeToolsVue from './components/tree-tools.vue'
 import { getDepartmentsApi } from '@/api/departments'
 import addDeptVue from './components/add-dept.vue'
+import { recursionDepartsFn } from '@/utils'
 export default {
   components: {
     treeToolsVue,
@@ -80,29 +81,17 @@ export default {
       this.company.id = ''
       // 原始数据也存一份
       this.originalDeparts = depts
-      // 调用递归方法处理数据渲染到页面
-      this.departs = this.recursionDepartsFn(depts, '')
+      const departs = recursionDepartsFn(depts, '')
+      // 接口返回的数据，都是同级的
+      // 使用：递归
+      // pid：-1：代表顶级组织架构
+      // pid：空字符串：代表一级组织架构
+      // pid：不为空：代表父级组织架构的id
+      this.departs = departs
       // 请求完数据，loading关闭
       this.loading = false
     },
-    // 递归处理后台返回的数据
-    recursionDepartsFn(data, value) {
-      const list = []
-      data.forEach(item => {
-        // 想筛选第一级数据
-        // item第一次遍历pid是空字符串
-        // 还要找第二级，这时就需要传递item.id和pid比较
-        if (item.pid === value) {
-          const children = this.recursionDepartsFn(data, item.id)
-          // 如果返回的数据大于0，说明有儿子
-          if (children.length > 0) {
-            item.children = children
-          }
-          list.push(item)
-        }
-      })
-      return list
-    },
+
     // 点击新增部门出发的方法
     openDialog(data) {
       // 目标：打开弹窗再进行接口请求
